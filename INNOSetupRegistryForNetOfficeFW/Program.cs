@@ -13,8 +13,15 @@ namespace INNOSetupRegistryForNetOfficeFW
             Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
-                INNOSetupGenerator generator = new INNOSetupGenerator(o.AddInPath, o.OfficeApps);
-                File.WriteAllText(o.INNOScriptFilePath, generator.Execute());
+                if (File.Exists(o.AddInPath))
+                {
+                    INNOSetupGenerator generator = new INNOSetupGenerator(o.AddInPath, o.OfficeApps);
+                    File.WriteAllText(o.INNOScriptFilePath, generator.Execute());
+                }
+                else
+                { 
+                    Console.WriteLine($"The source AddIn file {o.AddInPath} was not located.");                    
+                }
             });
         }
     }

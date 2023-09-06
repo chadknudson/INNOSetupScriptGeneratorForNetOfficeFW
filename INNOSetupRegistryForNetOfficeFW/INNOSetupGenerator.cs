@@ -1,13 +1,10 @@
-﻿using NetOfficeFw.Build;
+﻿using INNOSetupScriptGeneratorForNetOfficeFW.Extensions;
+using NetOfficeFw.Build;
 using System;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml;
-using System.Diagnostics;
-using Microsoft.SqlServer.Server;
 
 namespace NetOfficeFwInstallTools
 {
@@ -88,7 +85,7 @@ namespace NetOfficeFwInstallTools
                             foreach (var officeApp in OfficeApps)
                             {
                                 Console.WriteLine($@"Registering add-in {progId} to Microsoft Office {officeApp}");
-                                innoRegistry.Append(classRegistry.RegisterOfficeAddin(officeApp, progId));
+                                innoRegistry.Append(classRegistry.RegisterOfficeAddin(officeApp, progId, AppName, AppName));
                             }
                         }
                     }
@@ -112,8 +109,8 @@ namespace NetOfficeFwInstallTools
         {
             StringBuilder sbSetup = new StringBuilder();
 
-            string companyName = CompanyName.Replace(" ", "").Replace(".", "").Replace(",", "");
-            string appName = AppName.Replace(" ", "");
+            string companyName = CompanyName.Sanitize();
+            string appName = AppName.Sanitize();
             string outputFolder = Path.GetDirectoryName(AddInPath);
             string iconFilePath = FindIcoFile(outputFolder);
 
@@ -127,7 +124,7 @@ namespace NetOfficeFwInstallTools
             sbSetup.AppendLine("; NOTE: The value of AppId uniquely identifies this application.");
             sbSetup.AppendLine("; Do not use the same AppId value in installers for other applications.");
             sbSetup.AppendLine("; (To generate a new GUID, click Tools | Generate GUID inside the IDE.");
-            sbSetup.AppendLine("AppId = {" + Guid.NewGuid().ToString("B").ToUpperInvariant() + "}");
+            sbSetup.AppendLine("AppId = {" + Guid.NewGuid().ToRegistryString());
             sbSetup.AppendLine($"AppName = \"{AppName}\"");
             sbSetup.AppendLine("AppVersion ={#MyAppVersion}");
             sbSetup.AppendLine("AppVerName ={#MyAppName} {#MyAppVersion}");
@@ -135,7 +132,7 @@ namespace NetOfficeFwInstallTools
             sbSetup.AppendLine("AppPublisherURL ={#MyAppURL}");
             sbSetup.AppendLine("AppSupportURL ={#MyAppURL}");
             sbSetup.AppendLine("AppUpdatesURL ={#MyAppURL}");
-            sbSetup.AppendLine($"DefaultDirName ={{commonpf}}\\{companyName}\\{appName}");
+            sbSetup.AppendLine($"DefaultDirName ={{userappdata}}\\{companyName}\\{appName}");
             sbSetup.AppendLine("DefaultGroupName ={#MyAppName}");
             sbSetup.AppendLine($"OutputDir={outputFolder}");
             sbSetup.AppendLine($"OutputBaseFilename = {appName}Setup");
