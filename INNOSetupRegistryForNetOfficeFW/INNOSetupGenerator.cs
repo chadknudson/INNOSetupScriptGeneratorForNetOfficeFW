@@ -138,7 +138,8 @@ namespace NetOfficeFwInstallTools
             sbSetup.AppendLine($"OutputBaseFilename = {appName}Setup");
             if (!string.IsNullOrEmpty(iconFilePath))
             {
-                sbSetup.AppendLine($"SetupIconFile = \"{iconFilePath}\"");
+                string iconFile = Path.GetFileName(iconFilePath);
+                sbSetup.AppendLine($"SetupIconFile = \"{{ProjectDir}}{iconFile}\"");
             }
             else
             {
@@ -184,12 +185,14 @@ namespace NetOfficeFwInstallTools
                 sbFiles.AppendLine("[Files]");
                 string[] files = Directory.GetFiles(folder);
 
-                foreach (string file in files)
+                foreach (string filePath in files)
                 {
+                    string file = Path.GetFileName(filePath);
+
                     if (file.EndsWith(".pdb") || file.EndsWith(".xml"))
                         continue;
 
-                    sbFiles.AppendLine($"Source: \"{file}\"; DestDir: \"{{app}}\"; Flags: ignoreversion");
+                    sbFiles.AppendLine($"Source: \"{{#SourcePath}}{file}\"; DestDir: \"{{app}}\"; Flags: ignoreversion");
                 }
                 sbFiles.AppendLine();
             }

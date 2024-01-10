@@ -2,7 +2,7 @@
   "profiles": {
     "INNOSetupRegistryForNetOfficeFW": {
       "commandName": "Project",
-      "commandLineArgs": "--addin \"C:\\Projects\\Norse\\AutoDocs365\\Apps\\DocumentLibrary\\COMAddIn\\AutoDocs.COMAddIns\\bin\\Debug\\AutoDocs365.dll\" --officeapps \"Word\" --target \"C:\\Projects\\Norse\\AutoDocs365\\Apps\\DocumentLibrary\\COMAddIn\\AutoDocs.COMAddIns\\AutoDocs365.Setup\\AutoDocs365.iss\""
+      "commandLineArgs": "--addin \"D:\\Projects\\Norse\\AutoDocs365\\Apps\\AutoDocs365\\AutoDocs365.COMAddins\\bin\\Debug\\AutoDocs365.COMAddins.dll\" --officeapps \"Word\" --target \"D:\\Projects\\Norse\\AutoDocs365\\Apps\\AutoDocs365\\AutoDocs365.COMAddins\\Setup\\AutoDocs365.iss\""
     }
   }
 }
